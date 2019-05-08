@@ -1,0 +1,14 @@
+
+
+- name: Adding user to master server
+  local_action: shell useradd  "{{ user_name }}" && echo "{{ user_name }}":pass@123 | chpasswd && mkdir -p /home/{{ user_name }}/.ssh && chown -R "{{ user_name }}" /home/{{ user_name }}/.ssh
+  tags:
+   - grant
+
+- name: Generating Keys for user
+  become: True
+  become_user: "{{ user_name }}"
+  become_ask_pass : True
+  local_action: shell mkdir -p /tmp/{{ user_name }}/  && ssh-keygen  -C {{ user_name }} -f /tmp/{{ user_name }}/id_rsa -N "" && cp /tmp/{{ user_name }}/id_rsa /home/{{ user_name }}/.ssh/
+  tags:
+    - grant

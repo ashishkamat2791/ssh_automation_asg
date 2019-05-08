@@ -1,0 +1,12 @@
+---
+- hosts: all
+  gather_facts: false
+  vars_prompt:
+   - name: "user_name"
+     prompt: "Enter the username you want to give access"
+  remote_user: ec2-user
+  become: True
+  become_user: root
+  roles:
+      - ssh_automation
+
